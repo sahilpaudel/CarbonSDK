@@ -171,7 +171,7 @@ function reduce_results(options, matched_rules) {
 
   matched_rules = options["matched_rules"];
   var sorted_matached_rules = matched_rules.sort(function (a, b) {
-    return a.priority > b.priority;
+    return a.priority < b.priority;
   });
 
   options["reduce_matched_rules"] = sorted_matached_rules.reduce(function (reduced_result, currentValue, _currentIndex, _oldArray) {
@@ -255,5 +255,3 @@ function form_response(args) {
     result: args.reduce_matched_rules.result
   };
 }
-
-module.exports = evaluate;
