@@ -7,12 +7,14 @@
  */
 
 try {
-  var _console = {
+  var logger = {
     log: print,
     error: print,
     warn: print
   };
-} catch (e) {}
+} catch (e) {
+  logger = console;
+}
 
 function type_cast(value, datatype) {
   switch (datatype) {
@@ -85,7 +87,7 @@ function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, show_
 
     return JSON.stringify({ data: finalResponse, code: 0, message: "success" });
   } catch (error) {
-    console.log(error);
+    logger.log(error);
     return JSON.stringify({ message: error.message, code: 1, data: {} });
   }
 }
