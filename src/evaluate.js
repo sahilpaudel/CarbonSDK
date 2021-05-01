@@ -122,7 +122,7 @@ function fetch_version_from_running_experiment(options) {
 
 function fetch_version(ruleSetVersions, options) {
   options["rule_set_version"] = ruleSetVersions.filter(function (rsv) {
-    return rsv.id === options["version_id"];
+    return rsv.id == options["version_id"];
   })[0];
   return options;
 }
