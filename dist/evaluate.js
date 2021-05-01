@@ -78,10 +78,10 @@ function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, audit
     var reducedResults = reduce_results(filterMatchedRules, filterMatchedRules["matched_rules"]);
     var finalResponse = form_response(reducedResults);
 
-    return JSON.stringify(finalResponse, undefined, 2);
+    return JSON.stringify({ data: finalResponse, code: 0, message: "success" });
   } catch (error) {
     console.log(error);
-    return JSON.stringify({ message: error.message });
+    return JSON.stringify({ message: error.message, code: 1, data: {} });
   }
 }
 
