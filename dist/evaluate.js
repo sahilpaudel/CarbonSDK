@@ -1,6 +1,6 @@
 "use strict";
 
-console = {
+var console = {
   log: print,
   error: print,
   warn: print

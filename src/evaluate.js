@@ -1,4 +1,4 @@
-console = {
+const console = {
   log: print,
   error: print,
   warn: print
