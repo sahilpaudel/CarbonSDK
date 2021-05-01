@@ -1,14 +1,17 @@
 /**
  * Owner: Sahil Paudel
- * Original file: /gh/sahilpaudel/CarbonSDK@1.0.6/dist/evaluate.js
+ * Original file: /gh/sahilpaudel/CarbonSDK@1.1.0/dist/evaluate.js
  *
  */
 
-const console = {
-  log: print,
-  error: print,
-  warn: print
-};
+try {
+  const console = {
+    log: print,
+    error: print,
+    warn: print
+  }
+} catch (e) { }
+
 function type_cast(value, datatype) {
   switch (datatype) {
     case "integer":
@@ -44,17 +47,15 @@ function type_cast(value, datatype) {
   }
 }
 
-function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, audit_log_save_method, skip_experiment, show_test_results) {
+function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, show_test_results) {
   var initalData = {
     rule_set_name: rule_set_name,
     facts: JSON.parse(facts),
     version: version || "latest",
-    audit_log_save_method: audit_log_save_method || "sync",
-    skip_experiment: skip_experiment || false,
     show_test_results: show_test_results || false
   };
 
-  if(!facts) {
+  if (!facts) {
     throw Error("Missing Facts")
   }
 
@@ -74,18 +75,16 @@ function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, audit
 
   try {
     var findRuleSet = find_rule_set(ruleSet["rule_set"], version_check)
-    var findRunningExperiment = find_running_experiment(findRuleSet);
-    var versionFromExperiment = fetch_version_from_running_experiment(findRunningExperiment);
-    var setVersionId = set_version_id(ruleSetVersions["rule_set_versions"], versionFromExperiment, versionFromExperiment["version"]);
+    var setVersionId = set_version_id(ruleSetVersions["rule_set_versions"], findRuleSet, findRuleSet["version"]);
     var fetchVersion = fetch_version(ruleSetVersions["rule_set_versions"], setVersionId);
     var filterMatchedRules = filter_matched_rules(fetchVersion, fetchVersion["rule_set_version"]);
     var reducedResults = reduce_results(filterMatchedRules, filterMatchedRules["matched_rules"]);
     var finalResponse = form_response(reducedResults);
 
-    return JSON.stringify({data: finalResponse, code: 0, message: "success"})
+    return JSON.stringify({ data: finalResponse, code: 0, message: "success" })
   } catch (error) {
     console.log(error)
-    return JSON.stringify({ message: error.message, code: 1, data: {}})
+    return JSON.stringify({ message: error.message, code: 1, data: {} })
   }
 }
 
@@ -144,7 +143,7 @@ function filter_matched_rules(options, rule_set_version) {
 function compare(value1, comparator, value2, datatype) {
   value1 = type_cast(value1, datatype);
   value2 = type_cast(value2, datatype);
-  
+
   switch (comparator) {
     case "equal_to":
       {
@@ -255,12 +254,9 @@ function merge_objects(obj1, obj2) {
 
 function form_response(args) {
   return {
-    audit_log_id: args.audit_log_id || null,
-    experiment_split_log_id: args.experiment_split_log_id || null,
-    experiment_id: args.experiment_id || null,
+    rule_set_name: args.rule_set["name"],
     version_id: args.version_id,
-    split_identifier_value: args.split_identifier_value || null,
-    audit_log_async_id: args.audit_log_async_id || null,
-    result: args.reduce_matched_rules.result
+    result: args.reduce_matched_rules.result,
+    rules_evaluation_response: args.show_test_results ? args.reduce_matched_rules.rules_evaluation_response : null
   };
 }
