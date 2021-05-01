@@ -104,8 +104,12 @@ function set_version_id(ruleSetVersions, options, version_id) {
   if (!version_id) throw Error("No Valid Rule Set Provided");
 
   if (version_id === "latest") {
-    version_id = ruleSetVersions.filter(function (rsv) {
+    const liveRuleSetVersions = ruleSetVersions.filter(function (rsv) {
       return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] === options["rule_set"].id;
+    })
+
+    version_id = liveRuleSetVersions.sort(function(a,b){
+      return Date.parse(b.start_time) - Date.parse(a.start_time)
     })[0].id
   }
   options["version_id"] = version_id;
