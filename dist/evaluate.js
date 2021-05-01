@@ -1,5 +1,10 @@
 "use strict";
 
+console = {
+  log: print,
+  error: print,
+  warn: print
+};
 function type_cast(value, datatype) {
   switch (datatype) {
     case "integer":
