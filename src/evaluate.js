@@ -1,6 +1,5 @@
 /**
  * Owner: Sahil Paudel
- * Original file: /gh/sahilpaudel/CarbonSDK@1.2.0/dist/evaluate.js
  *
  */
 
@@ -107,6 +106,10 @@ function set_version_id(ruleSetVersions, options, version_id) {
     const liveRuleSetVersions = ruleSetVersions.filter(function (rsv) {
       return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] === options["rule_set"].id;
     })
+
+    if(liveRuleSetVersions.length === 0) {
+      throw Error("No live version for the specified rule set version");
+    }
 
     version_id = liveRuleSetVersions.sort(function(a,b){
       return Date.parse(b.start_time) - Date.parse(a.start_time)
