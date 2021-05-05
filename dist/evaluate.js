@@ -50,7 +50,7 @@ function type_cast(value, datatype) {
   }
 }
 
-function evaluate(ruleSet, ruleSetVersions, _, facts, version, show_test_results) {
+function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_results) {
   var initalData = {
     rule_set_id: ruleSetId,
     facts: JSON.parse(facts),
