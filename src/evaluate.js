@@ -60,10 +60,6 @@ function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_resul
     throw Error("Missing Facts")
   }
 
-  // if (typeof ruleSet === "string") {
-  //   ruleSet = JSON.parse(ruleSet)
-  // }
-
   if (typeof ruleSetVersions === "string") {
     ruleSetVersions = JSON.parse(ruleSetVersions)
   }
@@ -104,7 +100,7 @@ function set_version_id(ruleSetVersions, options, version_id) {
 
   if (version_id === "latest") {
     const liveRuleSetVersions = ruleSetVersions.filter(function (rsv) {
-      return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] === options["rule_set_id"];
+      return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] == options["rule_set_id"];
     })
 
     if(liveRuleSetVersions.length === 0) {
