@@ -60,9 +60,9 @@ function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_resul
     throw Error("Missing Facts")
   }
 
-  if (typeof ruleSet === "string") {
-    ruleSet = JSON.parse(ruleSet)
-  }
+  // if (typeof ruleSet === "string") {
+  //   ruleSet = JSON.parse(ruleSet)
+  // }
 
   if (typeof ruleSetVersions === "string") {
     ruleSetVersions = JSON.parse(ruleSetVersions)
@@ -75,7 +75,7 @@ function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_resul
   }
 
   try {
-    var findRuleSet = find_rule_set(ruleSet["rule_set"], versionCheck)
+    var findRuleSet = find_rule_set(ruleSetId, versionCheck)
     var setVersionId = set_version_id(ruleSetVersions["rule_set_versions"], findRuleSet, findRuleSet["version"]);
     var fetchVersion = fetch_version(ruleSetVersions["rule_set_versions"], setVersionId);
     var filterMatchedRules = filter_matched_rules(fetchVersion, fetchVersion["rule_set_version"]);
