@@ -50,9 +50,9 @@ function type_cast(value, datatype) {
   }
 }
 
-function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, show_test_results) {
+function evaluate(ruleSet, ruleSetVersions, _, facts, version, show_test_results) {
   var initalData = {
-    rule_set_name: rule_set_name,
+    rule_set_id: ruleSetId,
     facts: JSON.parse(facts),
     version: version || "latest",
     show_test_results: show_test_results || false
@@ -70,14 +70,14 @@ function evaluate(ruleSet, ruleSetVersions, rule_set_name, facts, version, show_
     ruleSetVersions = JSON.parse(ruleSetVersions);
   }
 
-  var version_check = check_version(initalData, version);
+  var versionCheck = check_version(initalData, version);
 
-  if (!version_check) {
+  if (!versionCheck) {
     throw Error("Invalid reference Audit Log ID");
   }
 
   try {
-    var findRuleSet = find_rule_set(ruleSet["rule_set"], version_check);
+    var findRuleSet = find_rule_set(ruleSet["rule_set"], versionCheck);
     var setVersionId = set_version_id(ruleSetVersions["rule_set_versions"], findRuleSet, findRuleSet["version"]);
     var fetchVersion = fetch_version(ruleSetVersions["rule_set_versions"], setVersionId);
     var filterMatchedRules = filter_matched_rules(fetchVersion, fetchVersion["rule_set_version"]);
@@ -96,8 +96,8 @@ function check_version(options, version) {
   return options;
 }
 
-function find_rule_set(ruleSet, options) {
-  options['rule_set'] = ruleSet;
+function find_rule_set(ruleSetId, options) {
+  options['rule_set_id'] = ruleSetId;
   return options;
 }
 
@@ -106,7 +106,7 @@ function set_version_id(ruleSetVersions, options, version_id) {
 
   if (version_id === "latest") {
     var liveRuleSetVersions = ruleSetVersions.filter(function (rsv) {
-      return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] === options["rule_set"].id;
+      return rsv["is_live"] === true && Date.parse(rsv["start_time"]) < Date.now() && rsv["rule_set_id"] === options["rule_set_id"];
     });
 
     if (liveRuleSetVersions.length === 0) {
