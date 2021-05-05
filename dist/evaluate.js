@@ -51,6 +51,7 @@ function type_cast(value, datatype) {
 }
 
 function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_results) {
+  logger.log("RuleSetId: ", ruleSetId);
   var initalData = {
     rule_set_id: ruleSetId,
     facts: JSON.parse(facts),
@@ -74,6 +75,7 @@ function evaluate(ruleSetId, ruleSetVersions, _, facts, version, show_test_resul
 
   try {
     var findRuleSet = find_rule_set(ruleSetId, versionCheck);
+    logger.log("findRuleSet: " + findRuleSet);
     var setVersionId = set_version_id(ruleSetVersions["rule_set_versions"], findRuleSet, findRuleSet["version"]);
     var fetchVersion = fetch_version(ruleSetVersions["rule_set_versions"], setVersionId);
     var filterMatchedRules = filter_matched_rules(fetchVersion, fetchVersion["rule_set_version"]);
