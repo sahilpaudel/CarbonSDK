@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src -d dist",
-    "git-util": "git add . && git commit -a && git push && git tag -d latest && get tag latest && git push origin :latest && git push origin latest",
+    "git-util": "git add . && git commit -a && git push && git tag -d latest && git tag latest && git push origin :latest && git push origin latest",
     "deploy": "yarn build && yarn git-util"
   },
   "devDependencies": {
