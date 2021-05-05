@@ -259,9 +259,9 @@ function merge_objects(obj1, obj2) {
 
 function form_response(args) {
   return {
-    rule_set_name: args.rule_set["name"],
+    rule_set_id: args.rule_set_id,
     version_id: args.version_id,
     result: args.reduce_matched_rules.result,
-    rules_evaluation_response: args.show_test_results ? args.reduce_matched_rules.rules_evaluation_response : null
+    rules_evaluation_response: args.show_test_results ? args.reduce_matched_rules.rules_evaluation_response : undefined
   };
 }
